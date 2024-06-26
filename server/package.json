@@ -10,14 +10,18 @@
   "author": "RXGabriel",
   "description": "",
   "dependencies": {
+    "@types/ejs": "^3.1.5",
+    "@types/nodemailer": "^6.4.15",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
     "express": "^4.19.2",
     "ioredis": "^5.4.1",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.4.3"
+    "mongoose": "^8.4.3",
+    "nodemailer": "^6.9.14"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
