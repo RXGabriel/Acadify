@@ -12,6 +12,7 @@ import ejs from "ejs";
 import path from "path";
 import sendMail from "../utils/sendMail";
 import { redis } from "../utils/redis";
+import { getUserById } from "../services/user.service";
 
 require("dotenv").config();
 
@@ -220,6 +221,17 @@ export const updateAccessToken = CatchAsyncError(
         status: "success",
         accessToken,
       });
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  }
+);
+
+export const getUserInfo = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = req.user?._id;
+      getUserById(userId, res);
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 400));
     }
