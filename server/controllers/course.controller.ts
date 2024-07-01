@@ -6,6 +6,12 @@ import { createCourse } from "../services/course.service";
 import CourseModel from "../models/course.model";
 import { redis } from "../utils/redis";
 
+interface IAddQuestionData {
+  question: string;
+  courseId: string;
+  contentId: string;
+}
+
 export const uploadCourse = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
