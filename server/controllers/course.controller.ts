@@ -23,6 +23,12 @@ interface IAddAnswerData {
   questionId: string;
 }
 
+interface IAddReviewData {
+  review: string;
+  rating: number;
+  userId: string;
+}
+
 export const uploadCourse = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
