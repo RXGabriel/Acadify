@@ -29,6 +29,12 @@ interface IAddReviewData {
   userId: string;
 }
 
+interface IAddToReviewData {
+  comment: string;
+  courseId: number;
+  reviewId: string;
+}
+
 export const uploadCourse = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
