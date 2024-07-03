@@ -42,7 +42,7 @@ courseRouter.put(
   addReplyToReview
 );
 courseRouter.get(
-  "/get-courses",
+  "/get-courses-admin",
   isAuthenticated,
   authorizeRoles("admin"),
   getAdminAllCourses
