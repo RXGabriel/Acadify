@@ -260,6 +260,11 @@ export const addAnswer = CatchAsyncError(
       await course?.save();
 
       if (req.user?._id === question.user._id) {
+        await NotificationModel.create({
+          user: req.user?._id,
+          title: "New Question Reply Received",
+          message: `You have a new question reply from ${courseContent.title}`,
+        });
       } else {
         const data = {
           name: question.user.name,
