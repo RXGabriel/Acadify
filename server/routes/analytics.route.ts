@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  getCoursesAnalytics,
   getOrderAnalytics,
   getUserAnalytics,
 } from "../controllers/analytics.controller";
@@ -19,6 +20,13 @@ analyticsRouter.get(
   isAuthenticated,
   authorizeRoles("admin"),
   getOrderAnalytics
+);
+
+analyticsRouter.get(
+  "/get-courses-analytics",
+  isAuthenticated,
+  authorizeRoles("admin"),
+  getCoursesAnalytics
 );
 
 export default analyticsRouter;
