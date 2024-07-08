@@ -1,22 +1,21 @@
 import express from "express";
+import { authorizeRoles, isAuthenticated } from "../middleware/auth";
 import {
   getCoursesAnalytics,
   getOrderAnalytics,
-  getUserAnalytics,
+  getUsersAnalytics,
 } from "../controllers/analytics.controller";
-import { authorizeRoles, isAuthenticated } from "../middleware/auth";
-
 const analyticsRouter = express.Router();
 
 analyticsRouter.get(
-  "/get-user-analytics",
+  "/get-users-analytics",
   isAuthenticated,
   authorizeRoles("admin"),
-  getUserAnalytics
+  getUsersAnalytics
 );
 
 analyticsRouter.get(
-  "/get-order-analytics",
+  "/get-orders-analytics",
   isAuthenticated,
   authorizeRoles("admin"),
   getOrderAnalytics
