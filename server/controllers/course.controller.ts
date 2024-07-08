@@ -29,10 +29,9 @@ interface IAddReviewData {
   rating: number;
   userId: string;
 }
-
-interface IAddToReviewData {
+interface IAddReviewData {
   comment: string;
-  courseId: number;
+  courseId: string;
   reviewId: string;
 }
 
@@ -65,8 +64,10 @@ export const editCourse = CatchAsyncError(
       const data = req.body;
       const thumbnail = data.thumbnail;
 
-      if (thumbnail) {
-        await cloudinary.v2.uploader.destroy(thumbnail.public_id);
+      const courseId = req.params.id;
+      const courseData = (await CourseModel.findById(courseId)) as any;
+      if (thumbnail && !thumbnail.startsWith("https")) {
+        await cloudinary.v2.uploader.destroy(courseData.thumbnail.public_id);
 
         const myCloud = await cloudinary.v2.uploader.upload(thumbnail, {
           folder: "courses",
@@ -77,14 +78,22 @@ export const editCourse = CatchAsyncError(
           url: myCloud.secure_url,
         };
       }
-      const courseId = req.params.id;
+
+      if (thumbnail.startsWith("https")) {
+        data.thumbnail = {
+          public_id: courseData?.thumbnail.public_id,
+          url: courseData?.thumbnail.url,
+        };
+      }
 
       const course = await CourseModel.findByIdAndUpdate(
         courseId,
-        { $set: data },
+        {
+          $set: data,
+        },
         { new: true }
       );
-
+      await redis.set(courseId, JSON.stringify(course));
       res.status(201).json({
         success: true,
         course,
@@ -129,25 +138,14 @@ export const getSingleCourse = CatchAsyncError(
 export const getAllCourses = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const isCacheExist = await redis.get("allCourses");
-      if (isCacheExist) {
-        const courses = JSON.parse(isCacheExist);
-        res.status(200).json({
-          success: true,
-          courses,
-        });
-      } else {
-        const courses = await CourseModel.find().select(
-          "-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links"
-        );
+      const courses = await CourseModel.find().select(
+        "-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links"
+      );
 
-        await redis.set("allCourses", JSON.stringify(courses));
-
-        res.status(200).json({
-          success: true,
-          courses,
-        });
-      }
+      res.status(200).json({
+        success: true,
+        courses,
+      });
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 500));
     }
@@ -192,11 +190,11 @@ export const addQuestion = CatchAsyncError(
         return next(new ErrorHandler("Invalid content id", 400));
       }
 
-      const courseContent = course?.courseData?.find((item: any) =>
+      const couseContent = course?.courseData?.find((item: any) =>
         item._id.equals(contentId)
       );
 
-      if (!courseContent) {
+      if (!couseContent) {
         return next(new ErrorHandler("Invalid content id", 400));
       }
 
@@ -205,16 +203,17 @@ export const addQuestion = CatchAsyncError(
         question,
         questionReplies: [],
       };
-      courseContent.questions.push(newQuestion);
+
+      couseContent.questions.push(newQuestion);
 
       await NotificationModel.create({
         user: req.user?._id,
         title: "New Question Received",
-        message: `You have a new question from ${courseContent?.title}`,
+        message: `You have a new question in ${couseContent.title}`,
       });
 
       await course?.save();
-      res.status(201).json({
+      res.status(200).json({
         success: true,
         course,
       });
@@ -235,25 +234,27 @@ export const addAnswer = CatchAsyncError(
         return next(new ErrorHandler("Invalid content id", 400));
       }
 
-      const courseContent = course?.courseData?.find((item: any) =>
+      const couseContent = course?.courseData?.find((item: any) =>
         item._id.equals(contentId)
       );
 
-      if (!courseContent) {
+      if (!couseContent) {
         return next(new ErrorHandler("Invalid content id", 400));
       }
 
-      const question = courseContent?.questions?.find((item: any) =>
+      const question = couseContent?.questions?.find((item: any) =>
         item._id.equals(questionId)
       );
 
       if (!question) {
-        return next(new ErrorHandler("Invalid content id", 400));
+        return next(new ErrorHandler("Invalid question id", 400));
       }
 
       const newAnswer: any = {
         user: req.user,
         answer,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       };
 
       question.questionReplies.push(newAnswer);
@@ -263,12 +264,12 @@ export const addAnswer = CatchAsyncError(
         await NotificationModel.create({
           user: req.user?._id,
           title: "New Question Reply Received",
-          message: `You have a new question reply from ${courseContent.title}`,
+          message: `You have a new question reply in ${couseContent.title}`,
         });
       } else {
         const data = {
           name: question.user.name,
-          title: courseContent.title,
+          title: couseContent.title,
         };
 
         const html = await ejs.renderFile(
@@ -317,8 +318,8 @@ export const addReview = CatchAsyncError(
       const { review, rating } = req.body as IAddReviewData;
       const reviewData: any = {
         user: req.user,
-        comment: review,
         rating,
+        comment: review,
       };
 
       course?.reviews.push(reviewData);
@@ -333,10 +334,12 @@ export const addReview = CatchAsyncError(
 
       await course?.save();
 
-      const notification = {
-        title: "New Review received",
+      await redis.set(courseId, JSON.stringify(course), "EX", 604800); // 7days
+      await NotificationModel.create({
+        user: req.user?._id,
+        title: "New Review Received",
         message: `${req.user?.name} has given a review in ${course?.name}`,
-      };
+      });
 
       res.status(200).json({
         success: true,
@@ -351,7 +354,7 @@ export const addReview = CatchAsyncError(
 export const addReplyToReview = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { comment, courseId, reviewId } = req.body as IAddToReviewData;
+      const { comment, courseId, reviewId } = req.body as IAddReviewData;
       const course = await CourseModel.findById(courseId);
 
       if (!course) {
@@ -369,6 +372,8 @@ export const addReplyToReview = CatchAsyncError(
       const replyData: any = {
         user: req.user,
         comment,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       };
 
       if (!review.commentReplies) {
@@ -377,7 +382,11 @@ export const addReplyToReview = CatchAsyncError(
 
       review.commentReplies?.push(replyData);
       await course?.save();
-      res.status(200).json({ success: true, course });
+      await redis.set(courseId, JSON.stringify(course), "EX", 604800);
+      res.status(200).json({
+        success: true,
+        course,
+      });
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 500));
     }
