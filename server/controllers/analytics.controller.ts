@@ -6,7 +6,7 @@ import userModel from "../models/user.model";
 import CourseModel from "../models/course.model";
 import orderModel from "../models/orderModel";
 
-export const getUserAnalytics = CatchAsyncError(
+export const getUsersAnalytics = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const users = await generateLast12MonthsData(userModel);
