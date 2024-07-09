@@ -1,14 +1,18 @@
-import { Request, Response, NextFunction } from "express";
+import { NextFunction, Request, Response } from "express";
 import { CatchAsyncError } from "../middleware/catchAsyncError";
 import ErrorHandler from "../utils/ErrorHandler";
-import orderModel, { IOrder } from "../models/orderModel";
+import { IOrder } from "../models/orderModel";
 import userModel from "../models/user.model";
-import CourseModel from "../models/course.model";
+import CourseModel, { ICourse } from "../models/course.model";
 import path from "path";
 import ejs from "ejs";
 import sendMail from "../utils/sendMail";
 import NotificationModel from "../models/notification.model";
 import { getAllOrdersService, newOrder } from "../services/order.service";
+import { redis } from "../utils/redis";
+
+require("dotenv").config();
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 export const createOrder = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -25,20 +29,20 @@ export const createOrder = CatchAsyncError(
         );
       }
 
-      const course = await CourseModel.findById(courseId);
+      const course: ICourse | null = await CourseModel.findById(courseId);
       if (!course) {
         return next(new ErrorHandler("Course not found", 404));
       }
 
       const data: any = {
         courseId: course._id,
-        userId: req.user?._id,
+        userId: user?._id,
         payment_info,
       };
 
       const mailData = {
         order: {
-          _id: course._id.toString().toString().slice(0, 6),
+          _id: course._id.toString().slice(0, 6),
           name: course.name,
           price: course.price,
           date: new Date().toLocaleDateString("en-US", {
@@ -68,6 +72,7 @@ export const createOrder = CatchAsyncError(
       }
 
       user?.courses.push(course?._id);
+      await redis.set(req.user?._id, JSON.stringify(user));
       await user?.save();
 
       await NotificationModel.create({
@@ -76,7 +81,7 @@ export const createOrder = CatchAsyncError(
         message: `You have a new order from ${course?.name}`,
       });
 
-      course.purchased ? (course.purchased += 1) : course.purchased;
+      course.purchased = course.purchased + 1;
       await course.save();
       newOrder(data, res, next);
     } catch (error: any) {
