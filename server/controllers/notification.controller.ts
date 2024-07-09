@@ -31,7 +31,7 @@ export const updateNotification = CatchAsyncError(
       } else {
         notification.status
           ? (notification.status = "read")
-          : notification.status;
+          : notification?.status;
       }
 
       await notification.save();
