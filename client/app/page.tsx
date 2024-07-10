@@ -1,9 +1,13 @@
-import React, { FC } from "react";
+"use client";
+import React, { FC, useState } from "react";
 import Heading from "./utils/Heading";
 
 interface Props {}
 
 const Page: FC<Props> = (props) => {
+  const [open, setOpen] = useState(false);
+  const [activeItem, setActiveItem] = useState(0);
+
   return (
     <div>
       <Heading
