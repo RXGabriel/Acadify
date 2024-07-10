@@ -1,6 +1,7 @@
 "use client";
 import React, { FC, useState } from "react";
 import Heading from "./utils/Heading";
+import Header from "./components/Header";
 
 interface Props {}
 
@@ -15,6 +16,7 @@ const Page: FC<Props> = (props) => {
         description="Acadify is a platform from students to learn and get help from teachers"
         keywords="Programming, MERN, Redux, Machine Learning"
       />
+      <Header open={open} setOpen={setOpen} activeItem={activeItem} />
     </div>
   );
 };
