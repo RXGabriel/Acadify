@@ -9,7 +9,7 @@ type Props = {
   setRoute?: (route: string) => void;
 };
 
-const CustomModel: FC<Props> = ({
+const CustomModal: FC<Props> = ({
   open,
   setOpen,
   component: Component,
@@ -29,4 +29,4 @@ const CustomModel: FC<Props> = ({
   );
 };
 
-export default CustomModel;
+export default CustomModal;
