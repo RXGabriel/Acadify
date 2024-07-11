@@ -4,7 +4,7 @@ import React, { FC, useState } from "react";
 import { ThemeSwitcher } from "../utils/ThemeSwitcher";
 import { HiOutlineMenuAlt3, HiOutlineUserCircle } from "react-icons/hi";
 import NavItems from "../utils/NavItems";
-import CustomModel from "../utils/CustomModal";
+import CustomModal from "../utils/CustomModal";
 import Login from "../components/Auth/Login";
 
 type Props = {
@@ -101,7 +101,7 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
       {route === "Login" && (
         <>
           {open && (
-            <CustomModel
+            <CustomModal
               open={open}
               setOpen={setOpen}
               setRoute={setRoute}
