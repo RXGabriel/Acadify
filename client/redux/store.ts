@@ -13,8 +13,8 @@ export const store = configureStore({
 
 const initializeApp = async () => {
   await store.dispatch(
-    apiSlice.endpoints.refreshToken.initiate({}, { forceRefetch: true })
+    apiSlice.endpoints.loadUSer.initiate({}, { forceRefetch: true })
   );
 };
 
-initializeApp()
+initializeApp();
