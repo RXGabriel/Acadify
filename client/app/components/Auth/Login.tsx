@@ -1,6 +1,6 @@
-"user client";
+"use client";
 import React, { FC, useEffect, useState } from "react";
-import { Formik, useFormik } from "formik";
+import { useFormik } from "formik";
 import * as Yup from "yup";
 import {
   AiOutlineEye,
@@ -10,7 +10,7 @@ import {
 import { FcGoogle } from "react-icons/fc";
 import { styles } from "../../../app/styles/style";
 import { useLoginMutation } from "@/redux/features/auth/authApi";
-import toast from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import { signIn } from "next-auth/react";
 
 type Props = {
@@ -38,7 +38,7 @@ const Login: FC<Props> = ({ setRoute, setOpen }) => {
 
   useEffect(() => {
     if (isSuccess) {
-      toast.success("Login successful");
+      toast.success("Login Successfully!");
       setOpen(false);
     }
     if (error) {
@@ -52,8 +52,8 @@ const Login: FC<Props> = ({ setRoute, setOpen }) => {
   const { errors, touched, values, handleChange, handleSubmit } = formik;
 
   return (
-    <div className="h-full">
-      <h1 className={`${styles.title}`}>Login with Ágora</h1>
+    <div className="w-full">
+      <h1 className={`${styles.title}`}>Login with Acadify</h1>
       <form onSubmit={handleSubmit}>
         <label className={`${styles.label}`} htmlFor="email">
           Enter your Email
@@ -100,10 +100,10 @@ const Login: FC<Props> = ({ setRoute, setOpen }) => {
               onClick={() => setShow(false)}
             />
           )}
+          {errors.password && touched.password && (
+            <span className="text-red-500 pt-2 block">{errors.password}</span>
+          )}
         </div>
-        {errors.password && touched.password && (
-          <span className="text-red-500 pt-2 block">{errors.password}</span>
-        )}
         <div className="w-full mt-5">
           <input type="submit" value="Login" className={`${styles.button}`} />
         </div>
