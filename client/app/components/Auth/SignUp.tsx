@@ -10,7 +10,7 @@ import {
 import { FcGoogle } from "react-icons/fc";
 import { styles } from "../../../app/styles/style";
 import { useRegisterMutation } from "@/redux/features/auth/authApi";
-import toast from "react-hot-toast";
+import { toast } from "react-hot-toast";
 
 type Props = {
   setRoute: (route: string) => void;
@@ -32,6 +32,7 @@ const SignUp: FC<Props> = ({ setRoute }) => {
     if (isSuccess) {
       const message = data?.message || "Registration successful";
       toast.success(message);
+      setRoute("Verification");
     }
     if (error) {
       if ("data" in error) {
@@ -58,7 +59,7 @@ const SignUp: FC<Props> = ({ setRoute }) => {
 
   return (
     <div className="w-full">
-      <h1 className={`${styles.title}`}>Join to Ágora</h1>
+      <h1 className={`${styles.title}`}>Join to ELearning</h1>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label className={`${styles.label}`} htmlFor="email">
