@@ -14,7 +14,7 @@ export const apiSlice = createApi({
         credentials: "include" as const,
       }),
     }),
-    loadUSer: builder.query({
+    loadUser: builder.query({
       query: (data) => ({
         url: "me",
         method: "GET",
@@ -25,7 +25,7 @@ export const apiSlice = createApi({
           const result = await queryFulfilled;
           dispatch(
             userLoggedIn({
-              accessToken: result.data.activationToken,
+              accessToken: result.data.accessToken,
               user: result.data.user,
             })
           );
@@ -37,4 +37,4 @@ export const apiSlice = createApi({
   }),
 });
 
-export const { useRefreshTokenQuery, useLoadUSerQuery } = apiSlice;
+export const { useRefreshTokenQuery, useLoadUserQuery } = apiSlice;
