@@ -1,7 +1,7 @@
 import { styles } from "@/app/styles/style";
 import { useActivationMutation } from "@/redux/features/auth/authApi";
 import React, { FC, useEffect, useRef, useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import { VscWorkspaceTrusted } from "react-icons/vsc";
 import { useSelector } from "react-redux";
 
@@ -45,10 +45,10 @@ const Verification: FC<Props> = ({ setRoute }) => {
   ];
 
   const [verifyNumber, setVerifyNumber] = useState<VerifyNumber>({
-    "0": "",
-    "1": "",
-    "2": "",
-    "3": "",
+    0: "",
+    1: "",
+    2: "",
+    3: "",
   });
 
   const verificationHandler = async () => {
@@ -77,7 +77,7 @@ const Verification: FC<Props> = ({ setRoute }) => {
 
   return (
     <div>
-      <h1 className={`${styles.title}`}>Verify your account</h1>
+      <h1 className={`${styles.title}`}>Verify Your Account</h1>
       <br />
       <div className="w-full flex items-center justify-center mt-2">
         <div className="w-[80px] h-[80px] rounded-full bg-[#497DF2] flex items-center justify-center">
