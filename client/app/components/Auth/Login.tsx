@@ -89,13 +89,15 @@ const Login: FC<Props> = ({ setRoute, setOpen }) => {
           />
           {!show ? (
             <AiOutlineEyeInvisible
-              className="absolute bottom-3 right-2 z-1 cursor-pointer"
+              color="black"
+              className="absolute bottom-3 right-2 z-1 cursor-pointer dark:bg-slate-600 "
               size={20}
               onClick={() => setShow(true)}
             />
           ) : (
             <AiOutlineEye
-              className="absolute bottom-3 right-2 z-1 cursor-pointer"
+              color="black"
+              className="absolute bottom-3 right-2 z-1 cursor-pointer dark:bg-slate-600 "
               size={20}
               onClick={() => setShow(false)}
             />
@@ -119,11 +121,12 @@ const Login: FC<Props> = ({ setRoute, setOpen }) => {
           />
           <AiFillGithub
             size={30}
-            className="cursor-pointer ml-2"
+            color="black"
+            className="cursor-pointer ml-2 dark:bg-white"
             onClick={() => signIn("github")}
           />
         </div>
-        <h5 className="text-center pt-4 font-Poppins text-[14px]">
+        <h5 className="text-center pt-4 font-Poppins text-[14px] text-black dark:text-white">
           Not have any account?{" "}
           <span
             className="text-[#2190ff] pl-1 cursor-pointer"
