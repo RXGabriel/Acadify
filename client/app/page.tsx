@@ -12,21 +12,23 @@ const Page: FC<Props> = (props) => {
   const [route, setRoute] = useState("Login");
 
   return (
-    <div>
+    <>
       <Heading
         title="Acadify"
         description="Acadify is a platform from students to learn and get help from teachers"
         keywords="Programming, MERN, Redux, Machine Learning"
       />
-      <Header
-        open={open}
-        setOpen={setOpen}
-        activeItem={activeItem}
-        setRoute={setRoute}
-        route={route}
-      />
-      <Hero />
-    </div>
+      <div>
+        <Header
+          open={open}
+          setOpen={setOpen}
+          activeItem={activeItem}
+          setRoute={setRoute}
+          route={route}
+        />
+        <Hero />
+      </div>
+    </>
   );
 };
 
