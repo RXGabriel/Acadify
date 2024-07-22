@@ -32,10 +32,10 @@ const SideBarProfile: FC<Props> = ({
           src={
             user.avatar || avatar ? user.avatar.url || avatar : avatarDefault
           }
-          className="w-[20px] h-[20px] 800px:w-[30px] 800px:h-[30px] cursor-pointer rounded-full"
-          alt=""
+          alt="Avatar image"
           width={20}
           height={20}
+          className="w-[20px] h-[20px] 800px:w-[30px] 800px:h-[30px] cursor-pointer rounded-full"
         />
         <h5 className="pl-2 800px:block hidden font-Poppins dark:text-white text-black">
           My Account
