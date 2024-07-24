@@ -41,6 +41,47 @@ const CreateCourse = (props: Props) => {
     },
   ]);
 
+  const handleSubmit = async () => {
+    const formattedBenefits = benefits.map((benefit) => ({
+      title: benefit.title,
+    }));
+    const formattedPrerequisites = prerequisites.map((prerequisite) => ({
+      title: prerequisite.title,
+    }));
+
+    const formattedCourseContentData = courseContentData.map(
+      (courseContent) => ({
+        videoUrl: courseContent.videoUrl,
+        title: courseContent.title,
+        description: courseContent.description,
+        videoLength: courseContent.videoLength,
+        videoSection: courseContent.videoSection,
+        links: courseContent.links.map((link) => ({
+          title: link.title,
+          url: link.url,
+        })),
+        suggestion: courseContent.suggestion,
+      })
+    );
+
+    const data = {
+      name: courseInfo.name,
+      description: courseInfo.description,
+      categories: courseInfo.categories,
+      price: courseInfo.price,
+      estimatedPrice: courseInfo.estimatedPrice,
+      tags: courseInfo.tags,
+      thumbnail: courseInfo.thumbnail,
+      level: courseInfo.level,
+      demoUrl: courseInfo.demoUrl,
+      totalVideos: courseContentData.length,
+      benefits: formattedBenefits,
+      prerequisites: formattedPrerequisites,
+      courseData: formattedCourseContentData,
+    };
+    setCourseData(data);
+  };
+
   return (
     <div className="w-full flex min-h-screen">
       <div className="w-[80%]">
