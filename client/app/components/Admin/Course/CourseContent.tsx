@@ -61,6 +61,68 @@ const CourseContent: FC<Props> = ({
     }
   };
 
+  const newContentHandler = (item: any) => {
+    if (
+      item.title === "" ||
+      item.description === "" ||
+      item.videoUrl === "" ||
+      item.links[0].title === "" ||
+      item.links[0].url === "" ||
+      item.videoLength === ""
+    ) {
+      toast.error("Please fill all the fields first!");
+    } else {
+      let newVideoSection = "";
+
+      if (courseContentData.length > 0) {
+        const lastVideoSection =
+          courseContentData[courseContentData.length - 1].videoSection;
+
+        if (lastVideoSection) {
+          newVideoSection = lastVideoSection;
+        }
+      }
+
+      const newContent = {
+        videoUrl: "",
+        title: "",
+        description: "",
+        videoSection: newVideoSection,
+        videoLength: "",
+        links: [{ title: "", url: "" }],
+      };
+      setCourseContentData([...courseContentData, newContent]);
+    }
+  };
+
+  const addNewSection = () => {
+    if (
+      courseContentData[courseContentData.length - 1].title === "" ||
+      courseContentData[courseContentData.length - 1].description === "" ||
+      courseContentData[courseContentData.length - 1].videoUrl === "" ||
+      courseContentData[courseContentData.length - 1].links[0].title === "" ||
+      courseContentData[courseContentData.length - 1].links[0].url === ""
+    ) {
+      toast.error("Please fill all the fields first!");
+    } else {
+      setActiveSection(activeSection + 1);
+
+      const newContent = {
+        videoUrl: "",
+        title: "",
+        description: "",
+        videoLength: "",
+        videoSection: `Untitled Section ${activeSection}`,
+        links: [{ title: "", url: "" }],
+      };
+
+      setCourseContentData([...courseContentData, newContent]);
+    }
+  };
+
+  const prevButton = () => {
+    setActive(active - 1);
+  };
   return (
     <div>
       <div></div>
