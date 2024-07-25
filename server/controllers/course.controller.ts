@@ -8,6 +8,7 @@ import { redis } from "../utils/redis";
 import mongoose from "mongoose";
 import path from "path";
 import ejs from "ejs";
+import axios from "axios";
 import sendMail from "../utils/sendMail";
 import NotificationModel from "../models/notification.model";
 
@@ -30,6 +31,31 @@ interface IAddReviewData {
   userId: string;
 }
 interface IAddReviewData {
+  comment: string;
+  courseId: string;
+  reviewId: string;
+}
+
+interface IAddQuestionData {
+  question: string;
+  courseId: string;
+  contentId: string;
+}
+
+interface IAddAnswerData {
+  answer: string;
+  courseId: string;
+  contentId: string;
+  questionId: string;
+}
+
+interface IAddReviewData {
+  review: string;
+  rating: number;
+  userId: string;
+}
+
+interface IAddReviewDataReplay {
   comment: string;
   courseId: string;
   reviewId: string;
@@ -190,11 +216,11 @@ export const addQuestion = CatchAsyncError(
         return next(new ErrorHandler("Invalid content id", 400));
       }
 
-      const couseContent = course?.courseData?.find((item: any) =>
+      const courseContent = course?.courseData?.find((item: any) =>
         item._id.equals(contentId)
       );
 
-      if (!couseContent) {
+      if (!courseContent) {
         return next(new ErrorHandler("Invalid content id", 400));
       }
 
@@ -204,12 +230,12 @@ export const addQuestion = CatchAsyncError(
         questionReplies: [],
       };
 
-      couseContent.questions.push(newQuestion);
+      courseContent.questions.push(newQuestion);
 
       await NotificationModel.create({
         user: req.user?._id,
         title: "New Question Received",
-        message: `You have a new question in ${couseContent.title}`,
+        message: `You have a new question in ${courseContent.title}`,
       });
 
       await course?.save();
@@ -234,15 +260,15 @@ export const addAnswer = CatchAsyncError(
         return next(new ErrorHandler("Invalid content id", 400));
       }
 
-      const couseContent = course?.courseData?.find((item: any) =>
+      const courseContent = course?.courseData?.find((item: any) =>
         item._id.equals(contentId)
       );
 
-      if (!couseContent) {
+      if (!courseContent) {
         return next(new ErrorHandler("Invalid content id", 400));
       }
 
-      const question = couseContent?.questions?.find((item: any) =>
+      const question = courseContent?.questions?.find((item: any) =>
         item._id.equals(questionId)
       );
 
@@ -264,12 +290,12 @@ export const addAnswer = CatchAsyncError(
         await NotificationModel.create({
           user: req.user?._id,
           title: "New Question Reply Received",
-          message: `You have a new question reply in ${couseContent.title}`,
+          message: `You have a new question reply in ${courseContent.title}`,
         });
       } else {
         const data = {
           name: question.user.name,
-          title: couseContent.title,
+          title: courseContent.title,
         };
 
         const html = await ejs.renderFile(
@@ -334,7 +360,7 @@ export const addReview = CatchAsyncError(
 
       await course?.save();
 
-      await redis.set(courseId, JSON.stringify(course), "EX", 604800); // 7days
+      await redis.set(courseId, JSON.stringify(course), "EX", 604800);
       await NotificationModel.create({
         user: req.user?._id,
         title: "New Review Received",
@@ -354,7 +380,7 @@ export const addReview = CatchAsyncError(
 export const addReplyToReview = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { comment, courseId, reviewId } = req.body as IAddReviewData;
+      const { comment, courseId, reviewId } = req.body as IAddReviewDataReplay;
       const course = await CourseModel.findById(courseId);
 
       if (!course) {
@@ -420,6 +446,28 @@ export const deleteCourse = CatchAsyncError(
         success: true,
         message: "Course deleted successfully",
       });
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  }
+);
+
+export const generateVideoUrl = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { videoId } = req.body;
+      const response = await axios.post(
+        `https://dev.vdocipher.com/api/videos/${videoId}/otp`,
+        { ttl: 300 },
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Apisecret ${process.env.VDOCIPHER_API_SECRET}`,
+          },
+        }
+      );
+      res.json(response.data);
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 400));
     }
