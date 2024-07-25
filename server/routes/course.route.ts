@@ -7,6 +7,7 @@ import {
   addReview,
   deleteCourse,
   editCourse,
+  generateVideoUrl,
   getAdminAllCourses,
   getAllCourses,
   getCourseByUser,
@@ -48,6 +49,7 @@ courseRouter.get(
   authorizeRoles("admin"),
   getAdminAllCourses
 );
+courseRouter.post("/getVdoCipherOTP", generateVideoUrl);
 
 courseRouter.delete(
   "/delete-course/:id",
