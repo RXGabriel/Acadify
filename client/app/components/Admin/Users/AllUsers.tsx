@@ -1,21 +1,30 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { Box, Button, Modal } from "@mui/material";
 import { AiOutlineDelete, AiOutlineMail } from "react-icons/ai";
 import { useTheme } from "next-themes";
-import { format } from "timeago.js";
 import Loader from "../../Loader/Loader";
+import { format } from "timeago.js";
 import { useGetAllUsersQuery } from "@/redux/features/user/userApi";
 import { styles } from "@/app/styles/style";
 
 type Props = {
-  isTeam: boolean;
+  isTeam?: boolean;
 };
 
 const AllCourses: FC<Props> = ({ isTeam }) => {
   const { theme, setTheme } = useTheme();
   const [active, setActive] = useState(false);
-  const { isLoading, data, error } = useGetAllUsersQuery({});
+  const [email, setEmail] = useState("");
+  const [role, setRole] = useState("admin");
+  const [open, setOpen] = useState(false);
+  const [userId, setUserId] = useState("");
+
+  const { isLoading, data, refetch } = useGetAllUsersQuery(
+    {},
+    { refetchOnMountOrArgChange: true }
+  );
+
   const columns = [
     { field: "id", headerName: "ID", flex: 0.3 },
     { field: "name", headerName: "Name", flex: 0.5 },
@@ -24,13 +33,18 @@ const AllCourses: FC<Props> = ({ isTeam }) => {
     { field: "courses", headerName: "Purchased Courses", flex: 0.5 },
     { field: "created_at", headerName: "Joined At", flex: 0.5 },
     {
-      field: "  ",
+      field: " ",
       headerName: "Delete",
       flex: 0.2,
       renderCell: (params: any) => {
         return (
           <>
-            <Button>
+            <Button
+              onClick={() => {
+                setOpen(!open);
+                setUserId(params.row.id);
+              }}
+            >
               <AiOutlineDelete
                 className="dark:text-white text-black"
                 size={20}
@@ -94,14 +108,16 @@ const AllCourses: FC<Props> = ({ isTeam }) => {
         <Loader />
       ) : (
         <Box m="20px">
-          <div className="w-full flex justify-end">
-            <div
-              className={`${styles.button} !w-[200px] !rounded-[10px] dark:bg-[#57c7a3] !h-[35px] dark:border dark:border-[#ffffff6c]`}
-              onClick={() => setActive(!active)}
-            >
-              Add New Member
+          {isTeam && (
+            <div className="w-full flex justify-end">
+              <div
+                className={`${styles.button} !w-[200px] !rounded-[10px] dark:bg-[#57c7a3] !h-[35px] dark:border dark:border-[#ffffff6c]`}
+                onClick={() => setActive(!active)}
+              >
+                Add New Member
+              </div>
             </div>
-          </div>
+          )}
           <Box
             m="40px 0 0 0"
             height="80vh"
