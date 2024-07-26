@@ -1,6 +1,6 @@
 "use client";
 
-import AdminProtected from "@/hooks/adminProtected";
+import AdminProtected from "@/app/hooks/adminProtected";
 import React from "react";
 import Heading from "../utils/Heading";
 import AdminSidebar from "../components/Admin/sidebar/AdminSidebar";

@@ -2,7 +2,7 @@
 
 import React from "react";
 import Heading from "@/app/utils/Heading";
-import AdminProtected from "@/hooks/adminProtected";
+import AdminProtected from "@/app/hooks/adminProtected";
 import AdminSideBar from "../../components/Admin/sidebar/AdminSidebar";
 import DashboardHero from "@/app/components/Admin/DashboardHero";
 import AllCourses from "../../components/Admin/Course/AllCourses";
