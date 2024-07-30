@@ -1,6 +1,6 @@
-/* eslint-disable @next/next/no-img-element */
 import { styles } from "@/app/styles/style";
 import { useGetHeroDataQuery } from "@/redux/features/layout/layoutApi";
+import Image from "next/image";
 import React, { FC, useEffect, useState } from "react";
 
 type Props = {
@@ -75,10 +75,10 @@ const CourseInformation: FC<Props> = ({
     <div className="w-[80%] m-auto mt-24">
       <form onSubmit={handleSubmit} className={`${styles.label}`}>
         <div>
-          <label htmlFor="">Course Name</label>
+          <label htmlFor="name">Course Name</label>
           <input
-            type="name"
-            name=""
+            type="text"
+            name="name"
             required
             value={courseInfo.name}
             onChange={(e: any) =>
@@ -94,8 +94,8 @@ const CourseInformation: FC<Props> = ({
         <div className="mb-5">
           <label className={`${styles.label}`}>Course Description</label>
           <textarea
-            name=""
-            id=""
+            name="description"
+            id="description"
             cols={30}
             rows={8}
             placeholder="Write something amazing..."
@@ -112,7 +112,7 @@ const CourseInformation: FC<Props> = ({
             <label className={`${styles.label}`}>Course Price</label>
             <input
               type="number"
-              name=""
+              name="price"
               required
               value={courseInfo.price}
               onChange={(e: any) =>
@@ -130,12 +130,12 @@ const CourseInformation: FC<Props> = ({
             </label>
             <input
               type="number"
-              name=""
+              name="estimatedPrice"
               value={courseInfo.estimatedPrice}
               onChange={(e: any) =>
                 setCourseInfo({ ...courseInfo, estimatedPrice: e.target.value })
               }
-              id="price"
+              id="estimatedPrice"
               placeholder="79"
               className={`
             ${styles.input}`}
@@ -145,21 +145,18 @@ const CourseInformation: FC<Props> = ({
         <br />
         <div className="w-full flex justify-between">
           <div className="w-[45%]">
-            <label className={`${styles.label}`} htmlFor="email">
-              Course Tags
-            </label>
+            <label className={`${styles.label}`}>Course Tags</label>
             <input
               type="text"
               required
-              name=""
+              name="tags"
               value={courseInfo.tags}
               onChange={(e: any) =>
                 setCourseInfo({ ...courseInfo, tags: e.target.value })
               }
               id="tags"
               placeholder="MERN,Next 13,Socket io,tailwind css,LMS"
-              className={`
-            ${styles.input}`}
+              className={`${styles.input}`}
             />
           </div>
           <div className="w-[50%]">
@@ -167,10 +164,10 @@ const CourseInformation: FC<Props> = ({
               Course Categories
             </label>
             <select
-              name=""
-              id=""
+              name="categories"
+              id="categories"
               className={`${styles.input}`}
-              value={courseInfo.category}
+              value={courseInfo.categories}
               onChange={(e: any) =>
                 setCourseInfo({ ...courseInfo, categories: e.target.value })
               }
@@ -197,7 +194,7 @@ const CourseInformation: FC<Props> = ({
             <label className={`${styles.label}`}>Course Level</label>
             <input
               type="text"
-              name=""
+              name="level"
               value={courseInfo.level}
               required
               onChange={(e: any) =>
@@ -213,7 +210,7 @@ const CourseInformation: FC<Props> = ({
             <label className={`${styles.label} w-[50%]`}>Demo Url</label>
             <input
               type="text"
-              name=""
+              name="demoUrl"
               required
               value={courseInfo.demoUrl}
               onChange={(e: any) =>
@@ -245,9 +242,9 @@ const CourseInformation: FC<Props> = ({
             onDrop={handleDrop}
           >
             {courseInfo.thumbnail ? (
-              <img
+              <Image
                 src={courseInfo.thumbnail}
-                alt=""
+                alt="Thumbnail"
                 className="max-h-full w-full object-cover"
               />
             ) : (
