@@ -1,14 +1,14 @@
 import React, { FC, useEffect, useState } from "react";
 import Image from "next/image";
-import { styles } from "../../app/styles/style";
+import { styles } from "../../../app/styles/style";
 import { AiOutlineCamera } from "react-icons/ai";
-import avatarIcon from "../../public/assets/avatar.png";
+import avatarIcon from "../../../public/assets/avatar.png";
 import {
   useEditProfileMutation,
   useUpdateAvatarMutation,
 } from "@/redux/features/user/userApi";
 import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
-import toast from "react-hot-toast";
+import { toast } from "react-hot-toast";
 
 type Props = {
   avatar: string | null;
@@ -36,7 +36,7 @@ const ProfileInfo: FC<Props> = ({ avatar, user }) => {
   };
 
   useEffect(() => {
-    if (isSuccess || success) {
+    if (isSuccess) {
       setLoadUser(true);
     }
     if (error || updateError) {
@@ -46,7 +46,7 @@ const ProfileInfo: FC<Props> = ({ avatar, user }) => {
       toast.success("Profile updated successfully!");
       setLoadUser(true);
     }
-  }, [isSuccess, error]);
+  }, [isSuccess, error, success, updateError]);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
