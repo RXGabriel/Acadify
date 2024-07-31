@@ -72,7 +72,6 @@ const Hero: FC<Props> = (props) => {
           <br />
         </div>
       </div>
-      )
     </>
   );
 };
