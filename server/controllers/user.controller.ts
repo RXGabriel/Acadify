@@ -2,7 +2,7 @@ import {
   accessTokenOptions,
   refreshTokenOptions,
   sendToken,
-} from "./../utils/jwt";
+} from "../utils/jwt";
 import { Request, Response, NextFunction } from "express";
 import userModel, { IUser } from "../models/user.model";
 import ErrorHandler from "../utils/ErrorHandler";
@@ -112,14 +112,9 @@ export const registrationUser = CatchAsyncError(
 export const createActivationToken = (user: any): IActivationToken => {
   const activationCode = Math.floor(1000 + Math.random() * 9000).toString();
   const token = jwt.sign(
-    {
-      user,
-      activationCode,
-    },
+    { user, activationCode },
     process.env.ACTIVATION_SECRET as Secret,
-    {
-      expiresIn: "5m",
-    }
+    { expiresIn: "5m" }
   );
   return { token, activationCode };
 };
