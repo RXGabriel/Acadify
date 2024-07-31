@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { CatchAsyncError } from "../middleware/catchAsyncError";
 import ErrorHandler from "../utils/ErrorHandler";
-import { IOrder } from "../models/orderModel";
+import { IOrder } from "../models/order.model";
 import userModel from "../models/user.model";
 import CourseModel, { ICourse } from "../models/course.model";
 import path from "path";
@@ -95,7 +95,7 @@ export const getAllOrders = CatchAsyncError(
     try {
       getAllOrdersService(res);
     } catch (error: any) {
-      return next(new ErrorHandler(error.message, 400));
+      return next(new ErrorHandler(error.message, 500));
     }
   }
 );
