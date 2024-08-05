@@ -1,10 +1,15 @@
 import { useGetCourseDetailsQuery } from "@/redux/features/courses/coursesApi";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Loader from "../Loader/Loader";
 import Heading from "@/app/utils/Heading";
 import Header from "../Header";
 import CourseDetails from "./CourseDetails";
 import Footer from "../Footer";
+import { loadStripe } from "@stripe/stripe-js";
+import {
+  useCreatePaymentIntentMutation,
+  useGetStripePublishableKeyQuery,
+} from "@/redux/features/orders/ordersApi";
 
 type Props = {
   id: string;
@@ -13,7 +18,29 @@ type Props = {
 const CourseDetailsPage = ({ id }: Props) => {
   const [route, setRoute] = useState("Login");
   const [open, setOpen] = useState(false);
+  const [stripePromise, setStripePromise] = useState<any>(null);
+  const [clientSecret, setClientSecret] = useState("");
   const { data, isLoading } = useGetCourseDetailsQuery(id);
+  const [createPaymentIntent, { data: paymentIntentData }] =
+    useCreatePaymentIntentMutation();
+  const { data: config } = useGetStripePublishableKeyQuery({});
+
+  useEffect(() => {
+    if (config) {
+      const publishablekey = config?.publishablekey;
+      setStripePromise(loadStripe(publishablekey));
+    }
+    if (data) {
+      const amount = Math.round(data.course.price * 100);
+      createPaymentIntent(amount);
+    }
+  }, [config, data]);
+
+  useEffect(() => {
+    if (paymentIntentData) {
+      setClientSecret(paymentIntentData?.client_secret);
+    }
+  }, [paymentIntentData]);
 
   return (
     <>
@@ -35,11 +62,15 @@ const CourseDetailsPage = ({ id }: Props) => {
             setOpen={setOpen}
             activeItem={1}
           />
-          <CourseDetails
-            data={data.course}
-            setRoute={setRoute}
-            setOpen={setOpen}
-          />
+          {stripePromise && (
+            <CourseDetails
+              data={data.course}
+              stripePromise={stripePromise}
+              clientSecret={clientSecret}
+              setRoute={setRoute}
+              setOpen={setOpen}
+            />
+          )}
           <Footer />
         </div>
       )}
