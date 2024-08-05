@@ -99,3 +99,11 @@ export const getAllOrders = CatchAsyncError(
     }
   }
 );
+
+export const sendStripePublishableKey = CatchAsyncError(
+  async (req: Request, res: Response) => {
+    res.status(200).json({
+      stripePublishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
+    });
+  }
+);
