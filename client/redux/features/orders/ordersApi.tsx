@@ -16,7 +16,19 @@ export const ordersApi = apiSlice.injectEndpoints({
         credentials: "include" as const,
       }),
     }),
+    createPaymentIntent: builder.mutation({
+      query: (amount) => ({
+        url: "payment",
+        method: "post",
+        body: { amount },
+        credentials: "include" as const,
+      }),
+    }),
   }),
 });
 
-export const { useGetAllOrdersQuery } = ordersApi;
+export const {
+  useGetAllOrdersQuery,
+  useGetStripePublishableKeyQuery,
+  useCreatePaymentIntentMutation,
+} = ordersApi;
