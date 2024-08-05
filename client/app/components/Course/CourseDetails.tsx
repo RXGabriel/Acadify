@@ -6,17 +6,27 @@ import React, { useEffect, useState } from "react";
 import { IoCheckmarkDoneOutline, IoCloseOutline } from "react-icons/io5";
 import { format } from "timeago.js";
 import CourseContentList from "../Course/CourseContentList";
+import { Elements } from "@stripe/react-stripe-js";
+import CheckOutForm from "../Payment/CheckOutForm";
 import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
 import Image from "next/image";
 import { VscVerifiedFilled } from "react-icons/vsc";
 
 type Props = {
   data: any;
+  stripePromise: any;
+  clientSecret: string;
   setRoute: any;
   setOpen: any;
 };
 
-const CourseDetails = ({ data, setRoute, setOpen: openAuthModal }: Props) => {
+const CourseDetails = ({
+  data,
+  stripePromise,
+  clientSecret,
+  setRoute,
+  setOpen: openAuthModal,
+}: Props) => {
   const { data: userData, refetch } = useLoadUserQuery(undefined, {});
   const [user, setUser] = useState<any>();
   const [open, setOpen] = useState(false);
@@ -263,6 +273,13 @@ const CourseDetails = ({ data, setRoute, setOpen: openAuthModal }: Props) => {
                   className="text-black cursor-pointer"
                   onClick={() => setOpen(false)}
                 />
+              </div>
+              <div className="w-full">
+                {stripePromise && clientSecret && (
+                  <Elements stripe={stripePromise} options={{ clientSecret }}>
+                    <CheckOutForm setOpen={setOpen} data={data} user={user} />
+                  </Elements>
+                )}
               </div>
             </div>
           </div>
