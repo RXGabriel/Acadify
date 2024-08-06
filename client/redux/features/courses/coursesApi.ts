@@ -61,6 +61,14 @@ export const coursesApi = apiSlice.injectEndpoints({
         credentials: "include" as const,
       }),
     }),
+    AddReviewInCourse: builder.mutation({
+      query: ({ review, rating, courseId }: any) => ({
+        url: `add-review/${courseId}`,
+        body: { review, rating },
+        method: "PUT",
+        credentials: "include" as const,
+      }),
+    }),
   }),
 });
 
@@ -73,4 +81,5 @@ export const {
   useGetCourseDetailsQuery,
   useGetCourseContentQuery,
   useAddNewQuestionMutation,
+  useAddReviewInCourseMutation,
 } = coursesApi;
