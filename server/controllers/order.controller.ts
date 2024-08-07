@@ -135,6 +135,16 @@ export const newPayment = CatchAsyncError(
         automatic_payment_methods: {
           enabled: true,
         },
+        shipping: {
+          name: "Gabriel Rafael",
+          address: {
+            line1: "510 Townsend St",
+            postal_code: "98140",
+            city: "Florida",
+            state: "CA",
+            country: "US",
+          },
+        },
       });
       res.status(201).json({
         success: true,
