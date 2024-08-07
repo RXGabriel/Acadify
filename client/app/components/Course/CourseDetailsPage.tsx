@@ -10,6 +10,7 @@ import {
   useCreatePaymentIntentMutation,
   useGetStripePublishableKeyQuery,
 } from "@/redux/features/orders/ordersApi";
+import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
 
 type Props = {
   id: string;
@@ -24,17 +25,18 @@ const CourseDetailsPage = ({ id }: Props) => {
   const [createPaymentIntent, { data: paymentIntentData }] =
     useCreatePaymentIntentMutation();
   const { data: config } = useGetStripePublishableKeyQuery({});
+  const { data: userData } = useLoadUserQuery(undefined, {});
 
   useEffect(() => {
     if (config) {
       const publishablekey = config?.publishablekey;
       setStripePromise(loadStripe(publishablekey));
     }
-    if (data) {
+    if (data && userData?.user) {
       const amount = Math.round(data.course.price * 100);
       createPaymentIntent(amount);
     }
-  }, [config, data]);
+  }, [config, data, userData]);
 
   useEffect(() => {
     if (paymentIntentData) {
