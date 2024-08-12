@@ -122,7 +122,7 @@ const Footer = (props: Props) => {
         </div>
         <br />
         <p className="text-center text-black dark:text-white">
-          Copyright © 2024 Acadify | Todos os Direitos Reservados
+          Copyright © 2024 Acadify | All rights reserved
         </p>
       </div>
       <br />
