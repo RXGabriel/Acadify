@@ -8,6 +8,7 @@ import orderRouter from "./routes/order.route";
 import notificationRouter from "./routes/notification.route";
 import analyticsRouter from "./routes/analytics.route";
 import layoutRouter from "./routes/layout.route";
+import { rateLimit } from "express-rate-limit";
 
 require("dotenv").config();
 export const app = express();
@@ -15,6 +16,13 @@ export const app = express();
 app.use(express.json({ limit: "50mb" }));
 app.use(cookieParser());
 app.use(cors({ origin: ["http://localhost:3000"], credentials: true }));
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  standardHeaders: "draft-7",
+  legacyHeaders: false,
+});
 
 app.use(
   "/api/v1",
@@ -39,4 +47,5 @@ app.all("*", (req: Request, res: Response, next: NextFunction) => {
   next(error);
 });
 
+app.use(limiter);
 app.use(ErrorMiddleware);
