@@ -11,7 +11,7 @@ const FAQ = (props: Props) => {
   const [questions, setQuestions] = useState<any[]>([]);
 
   const toggleQuestion = (id: any) => {
-    setActiveQuestion(setActiveQuestion === id ? null : id);
+    setActiveQuestion(activeQuestion === id ? null : id);
   };
 
   useEffect(() => {
