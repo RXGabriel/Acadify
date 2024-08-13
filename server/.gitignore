@@ -29,7 +29,12 @@ yarn-error.log*
 # local env files
 .env*.local
 .env
-
+node_modules/
+jspm_packages/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 # vercel
 .vercel
 
