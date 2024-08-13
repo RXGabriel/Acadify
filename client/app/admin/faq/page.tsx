@@ -10,27 +10,29 @@ import EditFaq from "../../components/Admin/Customization/EditFaq";
 type Props = {};
 
 const page = (props: Props) => {
-  <div>
-    <AdminProtected>
-      <Heading
-        title="Acadify - Admin"
-        description="Acadify is a platform from students to learn and get help from teachers"
-        keywords="Programming, MERN, Courses, Machine Learning"
-      />
+  return (
+    <div>
+      <AdminProtected>
+        <Heading
+          title="Acadify - Admin"
+          description="Acadify is a platform from students to learn and get help from teachers"
+          keywords="Programming, MERN, Courses, Machine Learning"
+        />
 
-      <div className="flex min-h-screen">
-        <div className="1500px:w-[16%] w-1/5">
-          <AdminSidebar />
-        </div>
+        <div className="flex min-h-screen">
+          <div className="1500px:w-[16%] w-1/5">
+            <AdminSidebar />
+          </div>
 
-        <div className="w-[85%]">
-          <DashboardHero />
-          <EditFaq />
-          <br />
+          <div className="w-[85%]">
+            <DashboardHero />
+            <EditFaq />
+            <br />
+          </div>
         </div>
-      </div>
-    </AdminProtected>
-  </div>;
+      </AdminProtected>
+    </div>
+  );
 };
 
 export default page;
