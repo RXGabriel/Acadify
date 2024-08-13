@@ -2,8 +2,8 @@
 import { ThemeSwitcher } from "@/app/utils/ThemeSwitcher";
 import {
   useGetAllNotificationsQuery,
-  useUpdateNotificationsStatusMutation,
-} from "@/redux/features/notifications/notificationsApi";
+  useUpdateNotificationStatusMutation,
+} from "@/redux/features/notifications/notificationApi";
 import React, { FC, useEffect, useState } from "react";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { format } from "timeago.js";
@@ -22,9 +22,8 @@ const DashboardHeader: FC<Props> = ({ open, setOpen }) => {
   const { data, refetch } = useGetAllNotificationsQuery(undefined, {
     refetchOnMountOrArgChange: true,
   });
-  const [updateNotificationsStatus, { isSuccess }] =
-    useUpdateNotificationsStatusMutation();
-
+  const [updateNotificationStatus, { isSuccess }] =
+    useUpdateNotificationStatusMutation();
   const [audio] = useState<any>(
     typeof window !== "undefined" &&
       new Audio(
@@ -37,7 +36,7 @@ const DashboardHeader: FC<Props> = ({ open, setOpen }) => {
   };
 
   const handleNotificationStatusChange = async (id: string) => {
-    await updateNotificationsStatus(id);
+    await updateNotificationStatus(id);
   };
 
   useEffect(() => {
@@ -53,7 +52,7 @@ const DashboardHeader: FC<Props> = ({ open, setOpen }) => {
   }, [data, isSuccess, audio]);
 
   useEffect(() => {
-    socketId.on("notifications", (data) => {
+    socketId.on("newNotification", (data) => {
       refetch();
       playNotificationSound();
     });
