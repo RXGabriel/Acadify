@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/role-supports-aria-props */
 import React, { FC, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { styles } from "@/app/styles/style";
