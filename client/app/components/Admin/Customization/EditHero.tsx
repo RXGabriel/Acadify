@@ -1,11 +1,10 @@
-import React, { FC, useState, useEffect } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { AiOutlineCamera } from "react-icons/ai";
 import {
   useEditLayoutMutation,
   useGetHeroDataQuery,
 } from "@/redux/features/layout/layoutApi";
-import Image from "next/image";
 import { styles } from "@/app/styles/style";
 
 type Props = {};
@@ -41,7 +40,7 @@ const EditHero: FC<Props> = (props: Props) => {
     if (data) {
       setTitle(data?.layout?.banner.title);
       setSubTitle(data?.layout?.banner.subTitle);
-      setImage(data?.layout?.banner.image?.url);
+      setImage(data?.layout?.banner?.image?.url);
     }
     if (isSuccess) {
       toast.success("Hero updated successfully");
@@ -58,9 +57,10 @@ const EditHero: FC<Props> = (props: Props) => {
   return (
     <>
       <div className="w-full 1000px:flex items-center">
+        <div className="absolute top-[100px] 1000px:top-[unset] 1500px:h-[700px] 1500px:w-[700px] 1100px:h-[500px] 1100px:w-[500px] h-[50vh] w-[50vh] hero_animation rounded-[50%] 1100px:left-[18rem] 1500px:left-[21rem]"></div>
         <div className="1000px:w-[40%] flex 1000px:min-h-screen items-center justify-end pt-[70px] 1000px:pt-[0] z-10">
           <div className="relative flex items-center justify-end">
-            <Image
+            <img
               src={image}
               alt=""
               className="object-contain 1100px:max-w-[90%] w-[90%] 1500px:max-w-[85%] h-[auto] z-[10]"
@@ -102,13 +102,15 @@ const EditHero: FC<Props> = (props: Props) => {
           <div
             className={`${
               styles.button
-            } !w-[100px] !min-h-[40px] !h-[40px] dark:text-white text-black bg-[#cccccc34]  ${
-              data?.layout?.banner?.title !== title ||
-              data?.layout?.banner?.subTitle !== subTitle ||
-              data?.layout?.banner?.image?.url !== image
-                ? "!cursor-pointer !bg-[#42d383]"
-                : "!cursor-not-allowed"
-            }  !rounded absolute bottom-12 right-12`}
+            } !w-[100px] !min-h-[40px] !h-[40px] dark:text-white text-black bg-[#cccccc34] 
+          ${
+            data?.layout?.banner?.title !== title ||
+            data?.layout?.banner?.subTitle !== subTitle ||
+            data?.layout?.banner?.image?.url !== image
+              ? "!cursor-pointer !bg-[#42d383]"
+              : "!cursor-not-allowed"
+          }
+          !rounded absolute bottom-12 right-12`}
             onClick={
               data?.layout?.banner?.title !== title ||
               data?.layout?.banner?.subTitle !== subTitle ||
