@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import Loader from "../../Loader/Loader";
 import { useGetUsersAnalyticsQuery } from "@/redux/features/analytics/analyticsApi";
 import { styles } from "@/app/styles/style";
