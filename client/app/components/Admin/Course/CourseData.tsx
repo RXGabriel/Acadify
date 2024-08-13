@@ -56,10 +56,12 @@ const CourseData: FC<Props> = ({
   };
   return (
     <div className="w-[80%] m-auto mt-24 block">
+      What are the benefits for students on this course?
       <div>
-        <label className={`${styles.label} text-[20px]`} htmlFor="email">
-          What are the benefits for students in this course?
-        </label>
+        <label
+          className={`${styles.label} text-[20px]`}
+          htmlFor="email"
+        ></label>
         <br />
         {benefits.map((benefit: any, index: number) => (
           <input
@@ -78,13 +80,12 @@ const CourseData: FC<Props> = ({
           onClick={handleAddBenefit}
         />
       </div>
-
       <div>
         <label className={`${styles.label} text-[20px]`} htmlFor="email">
           What are the prerequisites for starting this course?
         </label>
         <br />
-        {prerequisites.map((prerequisites: any, index: number) => (
+        {prerequisites.map((prerequisite: any, index: number) => (
           <input
             type="text"
             key={index}
@@ -92,7 +93,7 @@ const CourseData: FC<Props> = ({
             placeholder="You need basic knowledge of MERN stack"
             required
             className={`${styles.input} my-2`}
-            value={prerequisites.title}
+            value={prerequisite.title}
             onChange={(e) => handlePrerequisitesChange(index, e.target.value)}
           />
         ))}
