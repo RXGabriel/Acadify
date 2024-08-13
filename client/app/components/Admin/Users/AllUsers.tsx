@@ -5,8 +5,13 @@ import { AiOutlineDelete, AiOutlineMail } from "react-icons/ai";
 import { useTheme } from "next-themes";
 import Loader from "../../Loader/Loader";
 import { format } from "timeago.js";
-import { useGetAllUsersQuery } from "@/redux/features/user/userApi";
+import {
+  useDeleteUserMutation,
+  useGetAllUsersQuery,
+  useUpdateUserRoleMutation,
+} from "@/redux/features/user/userApi";
 import { styles } from "@/app/styles/style";
+import { toast } from "react-hot-toast";
 
 type Props = {
   isTeam?: boolean;
@@ -20,10 +25,40 @@ const AllCourses: FC<Props> = ({ isTeam }) => {
   const [open, setOpen] = useState(false);
   const [userId, setUserId] = useState("");
 
+  const [updateUserRole, { error: updateError, isSuccess }] =
+    useUpdateUserRoleMutation();
   const { isLoading, data, refetch } = useGetAllUsersQuery(
     {},
     { refetchOnMountOrArgChange: true }
   );
+  const [deleteUser, { isSuccess: deleteSuccess, error: deleteError }] =
+    useDeleteUserMutation({});
+
+  useEffect(() => {
+    if (updateError) {
+      if ("data" in updateError) {
+        const errorMessage = updateError as any;
+        toast.error(errorMessage.data.message);
+      }
+    }
+
+    if (isSuccess) {
+      refetch();
+      toast.success("User role updated successfully");
+      setActive(false);
+    }
+    if (deleteSuccess) {
+      refetch();
+      toast.success("User deleted successfully!");
+      setOpen(false);
+    }
+    if (deleteError) {
+      if ("data" in deleteError) {
+        const errorMessage = deleteError as any;
+        toast.error(errorMessage.data.message);
+      }
+    }
+  }, [updateError, isSuccess, deleteSuccess, deleteError]);
 
   const columns = [
     { field: "id", headerName: "ID", flex: 0.3 },
@@ -72,6 +107,15 @@ const AllCourses: FC<Props> = ({ isTeam }) => {
   ];
 
   const rows: any = [];
+
+  const handleSubmit = async () => {
+    await updateUserRole({ email, role });
+  };
+
+  const handleDelete = async () => {
+    const id = userId;
+    await deleteUser(id);
+  };
 
   if (isTeam) {
     const newData =
@@ -172,6 +216,79 @@ const AllCourses: FC<Props> = ({ isTeam }) => {
           >
             <DataGrid checkboxSelection rows={rows} columns={columns} />
           </Box>
+          {active && (
+            <Modal
+              open={active}
+              onClose={() => setActive(!active)}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box className="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-[450px] bg-white dark:bg-slate-900 rounded-[8px] shadow p-4 outline-none">
+                <h1 className={`${styles.title}`}>Add New Member</h1>
+                <div className="mt-4">
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Type your email..."
+                    className={`${styles.input}`}
+                  />
+                  <select
+                    name=""
+                    id=""
+                    className={`${styles.input} !mt-6`}
+                    onChange={(e: any) => setRole(e.target.value)}
+                  >
+                    <option
+                      className="dark:bg-[#000] text-[#fff]"
+                      value="admin"
+                    >
+                      Administrador
+                    </option>
+                    <option className="dark:bg-[#000] text-[#fff]" value="user">
+                      Usuário
+                    </option>
+                  </select>
+                  <br />
+                  <div
+                    className={`${styles.button} my-6 !h-[30px]`}
+                    onClick={handleSubmit}
+                  >
+                    Enviar
+                  </div>
+                </div>
+              </Box>
+            </Modal>
+          )}
+
+          {open && (
+            <Modal
+              open={open}
+              onClose={() => setOpen(!open)}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box className="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-[450px] bg-white dark:bg-slate-900 rounded-[8px] shadow p-4 outline-none">
+                <h1 className={`${styles.title}`}>
+                  Are you sure you want to delete this user?
+                </h1>
+                <div className="flex w-full items-center justify-between mb-6 mt-4">
+                  <div
+                    className={`${styles.button} !w-[120px] h-[30px] bg-[#57c7a3]`}
+                    onClick={() => setOpen(!open)}
+                  >
+                    Cancelar
+                  </div>
+                  <div
+                    className={`${styles.button} !w-[120px] h-[30px] bg-[#d63f3f]`}
+                    onClick={handleDelete}
+                  >
+                    Delete
+                  </div>
+                </div>
+              </Box>
+            </Modal>
+          )}
         </Box>
       )}
     </div>
