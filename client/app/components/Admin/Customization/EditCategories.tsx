@@ -29,7 +29,7 @@ const EditCategories = (props: Props) => {
     if (categories[categories.length - 1].title === "") {
       toast.error("Category title cannot be empty");
     } else {
-      setCategories((prevCategory: any) => [...prevCategory, { title: " " }]);
+      setCategories((prevCategory: any) => [...prevCategory, { title: "" }]);
     }
   };
 
