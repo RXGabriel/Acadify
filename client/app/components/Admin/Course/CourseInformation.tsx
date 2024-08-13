@@ -1,6 +1,5 @@
 import { styles } from "@/app/styles/style";
 import { useGetHeroDataQuery } from "@/redux/features/layout/layoutApi";
-import Image from "next/image";
 import React, { FC, useEffect, useState } from "react";
 
 type Props = {
@@ -85,9 +84,8 @@ const CourseInformation: FC<Props> = ({
               setCourseInfo({ ...courseInfo, name: e.target.value })
             }
             id="name"
-            placeholder="MERN stack LMS platform with next 13"
-            className={`
-            ${styles.input}`}
+            placeholder="Plataforma LMS com stack MERN usando Next 13"
+            className={`${styles.input}`}
           />
         </div>
         <br />
@@ -120,8 +118,7 @@ const CourseInformation: FC<Props> = ({
               }
               id="price"
               placeholder="29"
-              className={`
-            ${styles.input}`}
+              className={`${styles.input}`}
             />
           </div>
           <div className="w-[50%]">
@@ -137,8 +134,7 @@ const CourseInformation: FC<Props> = ({
               }
               id="estimatedPrice"
               placeholder="79"
-              className={`
-            ${styles.input}`}
+              className={`${styles.input}`}
             />
           </div>
         </div>
@@ -202,12 +198,11 @@ const CourseInformation: FC<Props> = ({
               }
               id="level"
               placeholder="Beginner/Intermediate/Expert"
-              className={`
-            ${styles.input}`}
+              className={`${styles.input}`}
             />
           </div>
           <div className="w-[50%]">
-            <label className={`${styles.label} w-[50%]`}>Demo Url</label>
+            <label className={`${styles.label} w-[50%]`}>Demo URL</label>
             <input
               type="text"
               name="demoUrl"
@@ -218,8 +213,7 @@ const CourseInformation: FC<Props> = ({
               }
               id="demoUrl"
               placeholder="Enter Demo Url"
-              className={`
-            ${styles.input}`}
+              className={`${styles.input}`}
             />
           </div>
         </div>
@@ -242,7 +236,7 @@ const CourseInformation: FC<Props> = ({
             onDrop={handleDrop}
           >
             {courseInfo.thumbnail ? (
-              <Image
+              <img
                 src={courseInfo.thumbnail}
                 alt="Thumbnail"
                 className="max-h-full w-full object-cover"
