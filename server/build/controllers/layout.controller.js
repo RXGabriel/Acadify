@@ -5,10 +5,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getLayoutByType = exports.editLayout = exports.createLayout = void 0;
 const cloudinary_1 = __importDefault(require("cloudinary"));
-const catchAsyncError_1 = require("../middleware/catchAsyncError");
+const catchAsyncErrors_1 = require("../middleware/catchAsyncErrors");
 const ErrorHandler_1 = __importDefault(require("../utils/ErrorHandler"));
 const layout_model_1 = __importDefault(require("../models/layout.model"));
-exports.createLayout = (0, catchAsyncError_1.CatchAsyncError)(async (req, res, next) => {
+exports.createLayout = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, next) => {
     try {
         const { type } = req.body;
         const isTypeExist = await layout_model_1.default.findOne({ type });
@@ -64,7 +64,7 @@ exports.createLayout = (0, catchAsyncError_1.CatchAsyncError)(async (req, res, n
         return next(new ErrorHandler_1.default(error.message, 500));
     }
 });
-exports.editLayout = (0, catchAsyncError_1.CatchAsyncError)(async (req, res, next) => {
+exports.editLayout = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, next) => {
     try {
         const { type } = req.body;
         if (type === "Banner") {
@@ -128,7 +128,7 @@ exports.editLayout = (0, catchAsyncError_1.CatchAsyncError)(async (req, res, nex
         return next(new ErrorHandler_1.default(error.message, 500));
     }
 });
-exports.getLayoutByType = (0, catchAsyncError_1.CatchAsyncError)(async (req, res, next) => {
+exports.getLayoutByType = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, next) => {
     try {
         const { type } = req.params;
         const layout = await layout_model_1.default.findOne({ type });

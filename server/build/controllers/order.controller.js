@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.newPayment = exports.sendStripePublishableKey = exports.getAllOrders = exports.createOrder = void 0;
 require("dotenv").config();
-const catchAsyncError_1 = require("../middleware/catchAsyncError");
+const catchAsyncErrors_1 = require("../middleware/catchAsyncErrors");
 const ErrorHandler_1 = __importDefault(require("../utils/ErrorHandler"));
 const user_model_1 = __importDefault(require("../models/user.model"));
 const course_model_1 = __importDefault(require("../models/course.model"));
@@ -16,7 +16,7 @@ const notification_model_1 = __importDefault(require("../models/notification.mod
 const order_service_1 = require("../services/order.service");
 const redis_1 = require("../utils/redis");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
-exports.createOrder = (0, catchAsyncError_1.CatchAsyncError)(async (req, res, next) => {
+exports.createOrder = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, next) => {
     try {
         const { courseId, payment_info } = req.body;
         if (payment_info) {
@@ -84,7 +84,7 @@ exports.createOrder = (0, catchAsyncError_1.CatchAsyncError)(async (req, res, ne
         return next(new ErrorHandler_1.default(error.message, 500));
     }
 });
-exports.getAllOrders = (0, catchAsyncError_1.CatchAsyncError)(async (req, res, next) => {
+exports.getAllOrders = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, next) => {
     try {
         (0, order_service_1.getAllOrdersService)(res);
     }
@@ -92,12 +92,12 @@ exports.getAllOrders = (0, catchAsyncError_1.CatchAsyncError)(async (req, res, n
         return next(new ErrorHandler_1.default(error.message, 500));
     }
 });
-exports.sendStripePublishableKey = (0, catchAsyncError_1.CatchAsyncError)(async (req, res) => {
+exports.sendStripePublishableKey = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res) => {
     res.status(200).json({
         publishablekey: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
     });
 });
-exports.newPayment = (0, catchAsyncError_1.CatchAsyncError)(async (req, res, next) => {
+exports.newPayment = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, next) => {
     try {
         const myPayment = await stripe.paymentIntents.create({
             amount: req.body.amount,

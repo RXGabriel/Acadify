@@ -24,7 +24,7 @@ const schema = Yup.object().shape({
   password: Yup.string().required("Please enter your password!").min(6),
 });
 
-const SignUp: FC<Props> = ({ setRoute }) => {
+const Signup: FC<Props> = ({ setRoute }) => {
   const [show, setShow] = useState(false);
   const [register, { data, error, isSuccess }] = useRegisterMutation();
 
@@ -165,4 +165,4 @@ const SignUp: FC<Props> = ({ setRoute }) => {
   );
 };
 
-export default SignUp;
+export default Signup;

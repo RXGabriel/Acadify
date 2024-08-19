@@ -8,7 +8,7 @@ require("dotenv").config();
 const jwt_1 = require("../utils/jwt");
 const user_model_1 = __importDefault(require("../models/user.model"));
 const ErrorHandler_1 = __importDefault(require("../utils/ErrorHandler"));
-const catchAsyncError_1 = require("../middleware/catchAsyncError");
+const catchAsyncErrors_1 = require("../middleware/catchAsyncErrors");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const ejs_1 = __importDefault(require("ejs"));
 const path_1 = __importDefault(require("path"));
@@ -16,7 +16,7 @@ const sendMail_1 = __importDefault(require("../utils/sendMail"));
 const redis_1 = require("../utils/redis");
 const user_service_1 = require("../services/user.service");
 const cloudinary_1 = __importDefault(require("cloudinary"));
-exports.registrationUser = (0, catchAsyncError_1.CatchAsyncError)(async (req, res, next) => {
+exports.registrationUser = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, next) => {
     try {
         const { name, email, password } = req.body;
         const isEmailExist = await user_model_1.default.findOne({ email });
@@ -59,7 +59,7 @@ const createActivationToken = (user) => {
     return { token, activationCode };
 };
 exports.createActivationToken = createActivationToken;
-exports.activateUser = (0, catchAsyncError_1.CatchAsyncError)(async (req, res, next) => {
+exports.activateUser = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, next) => {
     try {
         const { activation_token, activation_code } = req.body;
         const newUser = jsonwebtoken_1.default.verify(activation_token, process.env.ACTIVATION_SECRET);
@@ -84,7 +84,7 @@ exports.activateUser = (0, catchAsyncError_1.CatchAsyncError)(async (req, res, n
         return next(new ErrorHandler_1.default(error.message, 400));
     }
 });
-exports.loginUser = (0, catchAsyncError_1.CatchAsyncError)(async (req, res, next) => {
+exports.loginUser = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, next) => {
     try {
         const { email, password } = req.body;
         if (!email || !password) {
@@ -104,7 +104,7 @@ exports.loginUser = (0, catchAsyncError_1.CatchAsyncError)(async (req, res, next
         return next(new ErrorHandler_1.default(error.message, 400));
     }
 });
-exports.logoutUser = (0, catchAsyncError_1.CatchAsyncError)(async (req, res, next) => {
+exports.logoutUser = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, next) => {
     try {
         res.cookie("access_token", "", { maxAge: 1 });
         res.cookie("refresh_token", "", { maxAge: 1 });
@@ -119,7 +119,7 @@ exports.logoutUser = (0, catchAsyncError_1.CatchAsyncError)(async (req, res, nex
         return next(new ErrorHandler_1.default(error.message, 400));
     }
 });
-exports.updateAccessToken = (0, catchAsyncError_1.CatchAsyncError)(async (req, res, next) => {
+exports.updateAccessToken = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, next) => {
     try {
         const refresh_token = req.cookies.refresh_token;
         const decoded = jsonwebtoken_1.default.verify(refresh_token, process.env.REFRESH_TOKEN);
@@ -148,7 +148,7 @@ exports.updateAccessToken = (0, catchAsyncError_1.CatchAsyncError)(async (req, r
         return next(new ErrorHandler_1.default(error.message, 400));
     }
 });
-exports.getUserInfo = (0, catchAsyncError_1.CatchAsyncError)(async (req, res, next) => {
+exports.getUserInfo = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, next) => {
     try {
         const userId = req.user?._id;
         (0, user_service_1.getUserById)(userId, res);
@@ -157,7 +157,7 @@ exports.getUserInfo = (0, catchAsyncError_1.CatchAsyncError)(async (req, res, ne
         return next(new ErrorHandler_1.default(error.message, 400));
     }
 });
-exports.socialAuth = (0, catchAsyncError_1.CatchAsyncError)(async (req, res, next) => {
+exports.socialAuth = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, next) => {
     try {
         const { email, name, avatar } = req.body;
         const user = await user_model_1.default.findOne({ email });
@@ -173,7 +173,7 @@ exports.socialAuth = (0, catchAsyncError_1.CatchAsyncError)(async (req, res, nex
         return next(new ErrorHandler_1.default(error.message, 400));
     }
 });
-exports.updateUserInfo = (0, catchAsyncError_1.CatchAsyncError)(async (req, res, next) => {
+exports.updateUserInfo = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, next) => {
     try {
         const { name } = req.body;
         const userId = req.user?._id;
@@ -192,7 +192,7 @@ exports.updateUserInfo = (0, catchAsyncError_1.CatchAsyncError)(async (req, res,
         return next(new ErrorHandler_1.default(error.message, 400));
     }
 });
-exports.updatePassword = (0, catchAsyncError_1.CatchAsyncError)(async (req, res, next) => {
+exports.updatePassword = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, next) => {
     try {
         const { oldPassword, newPassword } = req.body;
         if (!oldPassword || !newPassword) {
@@ -218,7 +218,7 @@ exports.updatePassword = (0, catchAsyncError_1.CatchAsyncError)(async (req, res,
         return next(new ErrorHandler_1.default(error.message, 400));
     }
 });
-exports.updateProfilePicture = (0, catchAsyncError_1.CatchAsyncError)(async (req, res, next) => {
+exports.updateProfilePicture = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, next) => {
     try {
         const { avatar } = req.body;
         const userId = req.user?._id;
@@ -257,7 +257,7 @@ exports.updateProfilePicture = (0, catchAsyncError_1.CatchAsyncError)(async (req
         return next(new ErrorHandler_1.default(error.message, 400));
     }
 });
-exports.getAllUsers = (0, catchAsyncError_1.CatchAsyncError)(async (req, res, next) => {
+exports.getAllUsers = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, next) => {
     try {
         (0, user_service_1.getAllUsersService)(res);
     }
@@ -265,7 +265,7 @@ exports.getAllUsers = (0, catchAsyncError_1.CatchAsyncError)(async (req, res, ne
         return next(new ErrorHandler_1.default(error.message, 400));
     }
 });
-exports.updateUserRole = (0, catchAsyncError_1.CatchAsyncError)(async (req, res, next) => {
+exports.updateUserRole = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, next) => {
     try {
         const { email, role } = req.body;
         const isUserExist = await user_model_1.default.findOne({ email });
@@ -284,7 +284,7 @@ exports.updateUserRole = (0, catchAsyncError_1.CatchAsyncError)(async (req, res,
         return next(new ErrorHandler_1.default(error.message, 400));
     }
 });
-exports.deleteUser = (0, catchAsyncError_1.CatchAsyncError)(async (req, res, next) => {
+exports.deleteUser = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, next) => {
     try {
         const { id } = req.params;
         const user = await user_model_1.default.findById(id);

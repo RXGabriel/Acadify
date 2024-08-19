@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateVideoUrl = exports.deleteCourse = exports.getAdminAllCourses = exports.addReplyToReview = exports.addReview = exports.addAnswer = exports.addQuestion = exports.getCourseByUser = exports.getAllCourses = exports.getSingleCourse = exports.editCourse = exports.uploadCourse = void 0;
-const catchAsyncError_1 = require("../middleware/catchAsyncError");
+const catchAsyncErrors_1 = require("../middleware/catchAsyncErrors");
 const ErrorHandler_1 = __importDefault(require("../utils/ErrorHandler"));
 const cloudinary_1 = __importDefault(require("cloudinary"));
 const course_service_1 = require("../services/course.service");
@@ -16,7 +16,7 @@ const ejs_1 = __importDefault(require("ejs"));
 const axios_1 = __importDefault(require("axios"));
 const sendMail_1 = __importDefault(require("../utils/sendMail"));
 const notification_model_1 = __importDefault(require("../models/notification.model"));
-exports.uploadCourse = (0, catchAsyncError_1.CatchAsyncError)(async (req, res, next) => {
+exports.uploadCourse = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, next) => {
     try {
         const data = req.body;
         const thumbnail = data.thumbnail;
@@ -35,7 +35,7 @@ exports.uploadCourse = (0, catchAsyncError_1.CatchAsyncError)(async (req, res, n
         return next(new ErrorHandler_1.default(error.message, 500));
     }
 });
-exports.editCourse = (0, catchAsyncError_1.CatchAsyncError)(async (req, res, next) => {
+exports.editCourse = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, next) => {
     try {
         const data = req.body;
         const thumbnail = data.thumbnail;
@@ -70,7 +70,7 @@ exports.editCourse = (0, catchAsyncError_1.CatchAsyncError)(async (req, res, nex
         return next(new ErrorHandler_1.default(error.message, 500));
     }
 });
-exports.getSingleCourse = (0, catchAsyncError_1.CatchAsyncError)(async (req, res, next) => {
+exports.getSingleCourse = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, next) => {
     try {
         const courseId = req.params.id;
         const isCacheExist = await redis_1.redis.get(courseId);
@@ -94,7 +94,7 @@ exports.getSingleCourse = (0, catchAsyncError_1.CatchAsyncError)(async (req, res
         return next(new ErrorHandler_1.default(error.message, 500));
     }
 });
-exports.getAllCourses = (0, catchAsyncError_1.CatchAsyncError)(async (req, res, next) => {
+exports.getAllCourses = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, next) => {
     try {
         const courses = await course_model_1.default.find().select("-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links");
         res.status(200).json({
@@ -106,7 +106,7 @@ exports.getAllCourses = (0, catchAsyncError_1.CatchAsyncError)(async (req, res, 
         return next(new ErrorHandler_1.default(error.message, 500));
     }
 });
-exports.getCourseByUser = (0, catchAsyncError_1.CatchAsyncError)(async (req, res, next) => {
+exports.getCourseByUser = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, next) => {
     try {
         const userCourseList = req.user?.courses;
         const courseId = req.params.id;
@@ -125,7 +125,7 @@ exports.getCourseByUser = (0, catchAsyncError_1.CatchAsyncError)(async (req, res
         return next(new ErrorHandler_1.default(error.message, 500));
     }
 });
-exports.addQuestion = (0, catchAsyncError_1.CatchAsyncError)(async (req, res, next) => {
+exports.addQuestion = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, next) => {
     try {
         const { question, courseId, contentId } = req.body;
         const course = await course_model_1.default.findById(courseId);
@@ -157,7 +157,7 @@ exports.addQuestion = (0, catchAsyncError_1.CatchAsyncError)(async (req, res, ne
         return next(new ErrorHandler_1.default(error.message, 500));
     }
 });
-exports.addAnswer = (0, catchAsyncError_1.CatchAsyncError)(async (req, res, next) => {
+exports.addAnswer = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, next) => {
     try {
         const { answer, courseId, contentId, questionId } = req.body;
         const course = await course_model_1.default.findById(courseId);
@@ -214,7 +214,7 @@ exports.addAnswer = (0, catchAsyncError_1.CatchAsyncError)(async (req, res, next
         return next(new ErrorHandler_1.default(error.message, 500));
     }
 });
-exports.addReview = (0, catchAsyncError_1.CatchAsyncError)(async (req, res, next) => {
+exports.addReview = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, next) => {
     try {
         const userCourseList = req.user?.courses;
         const courseId = req.params.id;
@@ -253,7 +253,7 @@ exports.addReview = (0, catchAsyncError_1.CatchAsyncError)(async (req, res, next
         return next(new ErrorHandler_1.default(error.message, 500));
     }
 });
-exports.addReplyToReview = (0, catchAsyncError_1.CatchAsyncError)(async (req, res, next) => {
+exports.addReplyToReview = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, next) => {
     try {
         const { comment, courseId, reviewId } = req.body;
         const course = await course_model_1.default.findById(courseId);
@@ -285,7 +285,7 @@ exports.addReplyToReview = (0, catchAsyncError_1.CatchAsyncError)(async (req, re
         return next(new ErrorHandler_1.default(error.message, 500));
     }
 });
-exports.getAdminAllCourses = (0, catchAsyncError_1.CatchAsyncError)(async (req, res, next) => {
+exports.getAdminAllCourses = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, next) => {
     try {
         (0, course_service_1.getAllCoursesService)(res);
     }
@@ -293,7 +293,7 @@ exports.getAdminAllCourses = (0, catchAsyncError_1.CatchAsyncError)(async (req, 
         return next(new ErrorHandler_1.default(error.message, 400));
     }
 });
-exports.deleteCourse = (0, catchAsyncError_1.CatchAsyncError)(async (req, res, next) => {
+exports.deleteCourse = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, next) => {
     try {
         const { id } = req.params;
         const course = await course_model_1.default.findById(id);
@@ -311,7 +311,7 @@ exports.deleteCourse = (0, catchAsyncError_1.CatchAsyncError)(async (req, res, n
         return next(new ErrorHandler_1.default(error.message, 400));
     }
 });
-exports.generateVideoUrl = (0, catchAsyncError_1.CatchAsyncError)(async (req, res, next) => {
+exports.generateVideoUrl = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, next) => {
     try {
         const { videoId } = req.body;
         const response = await axios_1.default.post(`https://dev.vdocipher.com/api/videos/${videoId}/otp`, { ttl: 300 }, {
