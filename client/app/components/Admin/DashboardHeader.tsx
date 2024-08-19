@@ -3,7 +3,7 @@ import { ThemeSwitcher } from "@/app/utils/ThemeSwitcher";
 import {
   useGetAllNotificationsQuery,
   useUpdateNotificationStatusMutation,
-} from "@/redux/features/notifications/notificationApi";
+} from "../../../redux/features/notifications/notificationApi";
 import React, { FC, useEffect, useState } from "react";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { format } from "timeago.js";

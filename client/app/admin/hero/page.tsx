@@ -1,10 +1,9 @@
 "use client";
-
-import React from "react";
+import DashboardHero from "@/app/components/Admin/DashboardHero";
 import AdminProtected from "@/app/hooks/adminProtected";
 import Heading from "@/app/utils/Heading";
-import AdminSidebar from "@/app/components/Admin/sidebar/AdminSidebar";
-import DashboardHero from "@/app/components/Admin/DashboardHero";
+import React from "react";
+import AdminSidebar from "../../components/Admin/sidebar/AdminSidebar";
 import EditHero from "../../components/Admin/Customization/EditHero";
 
 type Props = {};
@@ -32,4 +31,5 @@ const page = (props: Props) => {
     </div>
   );
 };
+
 export default page;

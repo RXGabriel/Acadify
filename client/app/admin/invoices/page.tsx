@@ -1,10 +1,10 @@
 "use client";
 
 import React from "react";
-import Heading from "@/app/utils/Heading";
-import AdminSidebar from "@/app/components/Admin/sidebar/AdminSidebar";
-import AllInvoices from "@/app/components/Admin/Order/AllInvoices";
-import DashboardHeader from "@/app/components/Admin/DashboardHeader";
+import AdminSidebar from "../../components/Admin/sidebar/AdminSidebar";
+import Heading from "../../../app/utils/Heading";
+import DashboardHeader from "../../../app/components/Admin/DashboardHeader";
+import AllInvoices from "../../../app/components/Admin/Order/AllInvoices";
 
 type Props = {};
 
@@ -16,7 +16,7 @@ const page = (props: Props) => {
         description="Acadify is a platform from students to learn and get help from teachers"
         keywords="Programming, MERN, Courses, Machine Learning"
       />
-      <div className="flex h-screen">
+      <div className="flex">
         <div className="1500px:w-[16%] w-1/5">
           <AdminSidebar />
         </div>

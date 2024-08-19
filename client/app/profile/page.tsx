@@ -1,8 +1,8 @@
 "use client";
 
-import Header from "@/app/components/Header";
-import Heading from "@/app/utils/Heading";
-import Protected from "@/app/hooks/useProtected";
+import Header from "../components/Header";
+import Heading from "../utils/Heading";
+import Protected from "../hooks/useProtected";
 import React, { FC, useState } from "react";
 import Profile from "../components/Profile/Profile";
 import { useSelector } from "react-redux";

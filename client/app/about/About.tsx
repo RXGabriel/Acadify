@@ -18,40 +18,39 @@ const About = () => {
           <br />
           <br />
           As the founder and CEO of Acadify, I know firsthand the challenges
-          that come with learning and growing in the programming industry.
-          That&apos;s why I created Acadify &ndash; to provide new programmers
-          with the resources and support they need to succeed.
+          that come with learning and growing in the programming industry. That
+          is why I created Acadify; to provide new programmers with the
+          resources and support they need to succeed.
           <br />
           <br />
           Our YouTube channel is a treasure trove of informative videos on
-          everything from programming basics to advanced techniques. But
-          that&apos;s just the beginning. Our affordable courses are designed to
-          give you the high-quality education you need to succeed in the
-          industry, without breaking the bank.
+          everything from programming basics to advanced techniques. But that is
+          not just the beginning. Our affordable courses are designed to give
+          you the high-quality education you need to succeed in the industry,
+          without breaking the bank.
           <br />
           <br />
           At Acadify, we believe that price should never be a barrier to
-          achieving your dreams. That&apos;s why our courses are priced low
-          &ndash; so that anyone, regardless of their financial situation, can
+          achieving your dreams. That is why our courses are affordably priced –
+          to ensure that anyone, regardless of their financial situation, can
           access the tools and knowledge they need to succeed.
           <br />
           <br />
-          But Acadify is more than just a community &ndash; we&apos;re a family.
-          Our supportive community of like-minded individuals is here to help
-          you every step of the way, whether you&apos;re just starting out or
-          looking to take your skills to the next level.
+          But Acadify is more than just a community; we are a family. Our
+          supportive community of like-minded individuals is here to help you
+          every step of the way, whether you are just starting out or looking to
+          take your skills to the next level.
           <br />
           <br />
-          With Acadify by your side, there&apos;s nothing standing between you
+          With Acadify by your side, there is not nothing standing between you
           and your dream job. Our courses and community will provide you with
           the guidance, support, and motivation you need to unleash your full
           potential and become a skilled programmer.
           <br />
           <br />
-          So what are you waiting for? Join the Acadify family today and
-          let&apos;s conquer the programming industry together! With our
-          affordable courses, informative videos, and supportive community, the
-          sky&apos;s the limit.
+          So what are you waiting for? Join the Acadify family today and conquer
+          the programming industry! With our affordable courses, informative
+          videos, and supportive community, the sky is the limit.
         </p>
         <br />
         <span className="text-[22px]">RXGabriel</span>

@@ -9,7 +9,7 @@ import CoursePreview from "./CoursePreview";
 import {
   useEditCourseMutation,
   useGetAllCoursesQuery,
-} from "@/redux/features/courses/coursesApi";
+} from "../../../../redux/features/courses/coursesApi";
 import { toast } from "react-hot-toast";
 import { redirect } from "next/navigation";
 
@@ -19,14 +19,13 @@ type Props = {
 
 const EditCourse: FC<Props> = ({ id }) => {
   const [editCourse, { isSuccess, error }] = useEditCourseMutation();
-  const [courseData, setCourseData] = useState({});
   const { data, refetch } = useGetAllCoursesQuery(
     {},
     { refetchOnMountOrArgChange: true }
   );
+
   const editCourseData = data && data.courses.find((i: any) => i._id === id);
-  const [benefits, setBenefits] = useState([{ title: "" }]);
-  const [prerequisites, setPrerequisites] = useState([{ title: "" }]);
+
   const [active, setActive] = useState(0);
 
   const [courseInfo, setCourseInfo] = useState({
@@ -40,14 +39,14 @@ const EditCourse: FC<Props> = ({ id }) => {
     demoUrl: "",
     thumbnail: "",
   });
-
+  const [benefits, setBenefits] = useState([{ title: "" }]);
+  const [prerequisites, setPrerequisites] = useState([{ title: "" }]);
   const [courseContentData, setCourseContentData] = useState([
     {
       videoUrl: "",
       title: "",
       description: "",
       videoSection: "Untitled Section",
-      videoLength: "",
       links: [
         {
           title: "",
@@ -58,6 +57,7 @@ const EditCourse: FC<Props> = ({ id }) => {
     },
   ]);
 
+  const [courseData, setCourseData] = useState({});
   const handleSubmit = async () => {
     const formattedBenefits = benefits.map((benefit) => ({
       title: benefit.title,
@@ -71,7 +71,6 @@ const EditCourse: FC<Props> = ({ id }) => {
         videoUrl: courseContent.videoUrl,
         title: courseContent.title,
         description: courseContent.description,
-        videoLength: courseContent.videoLength,
         videoSection: courseContent.videoSection,
         links: courseContent.links.map((link) => ({
           title: link.title,
@@ -135,7 +134,6 @@ const EditCourse: FC<Props> = ({ id }) => {
       setCourseContentData(editCourseData.courseData);
     }
   }, [editCourseData]);
-
   return (
     <div className="w-full flex min-h-screen">
       <div className="w-[80%]">

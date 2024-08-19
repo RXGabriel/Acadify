@@ -1,3 +1,4 @@
+require("dotenv").config();
 import {
   accessTokenOptions,
   refreshTokenOptions,
@@ -6,7 +7,7 @@ import {
 import { Request, Response, NextFunction } from "express";
 import userModel, { IUser } from "../models/user.model";
 import ErrorHandler from "../utils/ErrorHandler";
-import { CatchAsyncError } from "../middleware/catchAsyncError";
+import { CatchAsyncError } from "../middleware/catchAsyncErrors";
 import jwt, { JwtPayload, Secret } from "jsonwebtoken";
 import ejs from "ejs";
 import path from "path";
@@ -18,8 +19,6 @@ import {
   updateUserRoleService,
 } from "../services/user.service";
 import cloudinary from "cloudinary";
-
-require("dotenv").config();
 
 interface IRegistrationBody {
   name: string;
@@ -68,7 +67,6 @@ export const registrationUser = CatchAsyncError(
     try {
       const { name, email, password } = req.body;
       const isEmailExist = await userModel.findOne({ email });
-
       if (isEmailExist) {
         return next(new ErrorHandler("Email already exist", 400));
       }

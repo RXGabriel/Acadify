@@ -8,7 +8,7 @@ import Footer from "../Footer";
 import { loadStripe } from "@stripe/stripe-js";
 import {
   useCreatePaymentIntentMutation,
-  useGetStripePublishableKeyQuery,
+  useGetStripePublishablekeyQuery,
 } from "@/redux/features/orders/ordersApi";
 import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
 
@@ -24,7 +24,7 @@ const CourseDetailsPage = ({ id }: Props) => {
   const { data, isLoading } = useGetCourseDetailsQuery(id);
   const [createPaymentIntent, { data: paymentIntentData }] =
     useCreatePaymentIntentMutation();
-  const { data: config } = useGetStripePublishableKeyQuery({});
+  const { data: config } = useGetStripePublishablekeyQuery({});
   const { data: userData } = useLoadUserQuery(undefined, {});
 
   useEffect(() => {

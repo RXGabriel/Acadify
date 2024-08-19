@@ -247,21 +247,19 @@ const CourseContentMedia = ({
       <br />
 
       <div className="w-full p-4 flex items-center justify-between bg-slate-500 bg-opacity-20 backdrop-blur shadow-[bg-slate-700] rounded shadow-inner">
-        {["Overview", "Resources", "Q&R", "Reviews"].map(
-          (text, index) => (
-            <h5
-              key={index}
-              className={`800px:text-[20px] cursor-pointer ${
-                activeBar === index
-                  ? "text-red-500"
-                  : "dark:text-white text-black"
-              }`}
-              onClick={() => setActiveBar(index)}
-            >
-              {text}
-            </h5>
-          )
-        )}
+        {["Overview", "Resources", "Q&R", "Reviews"].map((text, index) => (
+          <h5
+            key={index}
+            className={`800px:text-[20px] cursor-pointer ${
+              activeBar === index
+                ? "text-red-500"
+                : "dark:text-white text-black"
+            }`}
+            onClick={() => setActiveBar(index)}
+          >
+            {text}
+          </h5>
+        ))}
       </div>
       <br />
       {activeBar === 0 && (

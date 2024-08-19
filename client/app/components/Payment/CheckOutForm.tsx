@@ -7,6 +7,7 @@ import {
 } from "@stripe/react-stripe-js";
 import { styles } from "@/app/styles/style";
 import { useCreateOrderMutation } from "@/redux/features/orders/ordersApi";
+import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
 import { redirect } from "next/navigation";
 import { toast } from "react-hot-toast";
 import socketIO from "socket.io-client";

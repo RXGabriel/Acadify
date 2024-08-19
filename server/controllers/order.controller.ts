@@ -1,5 +1,6 @@
+require("dotenv").config();
 import { NextFunction, Request, Response } from "express";
-import { CatchAsyncError } from "../middleware/catchAsyncError";
+import { CatchAsyncError } from "../middleware/catchAsyncErrors";
 import ErrorHandler from "../utils/ErrorHandler";
 import { IOrder } from "../models/order.model";
 import userModel from "../models/user.model";
@@ -11,7 +12,6 @@ import NotificationModel from "../models/notification.model";
 import { getAllOrdersService, newOrder } from "../services/order.service";
 import { redis } from "../utils/redis";
 
-require("dotenv").config();
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 export const createOrder = CatchAsyncError(
@@ -117,7 +117,7 @@ export const getAllOrders = CatchAsyncError(
 export const sendStripePublishableKey = CatchAsyncError(
   async (req: Request, res: Response) => {
     res.status(200).json({
-      stripePublishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
+      publishablekey: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
     });
   }
 );

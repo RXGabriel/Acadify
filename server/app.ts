@@ -1,4 +1,6 @@
+require("dotenv").config();
 import express, { NextFunction, Request, Response } from "express";
+export const app = express();
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { ErrorMiddleware } from "./middleware/error";
@@ -10,12 +12,15 @@ import analyticsRouter from "./routes/analytics.route";
 import layoutRouter from "./routes/layout.route";
 import { rateLimit } from "express-rate-limit";
 
-require("dotenv").config();
-export const app = express();
-
 app.use(express.json({ limit: "50mb" }));
 app.use(cookieParser());
-app.use(cors({ origin: ["http://localhost:3000"], credentials: true }));
+
+app.use(
+  cors({
+    origin: ["https://acadify-client.vercel.app", "http://localhost:3000"],
+    credentials: true,
+  })
+);
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
