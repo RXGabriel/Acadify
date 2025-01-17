@@ -109,7 +109,7 @@ const Login: FC<Props> = ({ setRoute, setOpen, refetch }) => {
           )}
         </div>
         <div className="w-full mt-5">
-          <input type="submit" value="Entrar" className={styles.button} />
+          <input type="submit" value="Sign In" className={styles.button} />
         </div>
         <br />
         <h5 className="text-center pt-4 font-Poppins text-[14px] text-black dark:text-white">
